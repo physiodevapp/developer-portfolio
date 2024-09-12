@@ -1,9 +1,5 @@
 import styled from "styled-components";
 
-interface MarkerStyled {
-  $sectionIndex?: number
-}
-
 export const Layout = styled.div`
   width: 100%;
 
@@ -13,6 +9,8 @@ export const Layout = styled.div`
     flex-wrap: nowrap;
     padding: 0em 4em 0em;
     gap: 2em;
+    max-width: 1400px;
+    margin: 0 auto;
   } 
 `
 
@@ -64,13 +62,11 @@ export const SectionListContainer = styled.section`
   }
 `
 
-export const ListMarker = styled.div<MarkerStyled>`
+export const ListMarker = styled.div`
   font-weight: bold;
   font-size: 2rem;
   line-height: 2.2rem;
   position: absolute;
-  //top: ${({$sectionIndex}) => ($sectionIndex) ? ($sectionIndex) * 2.2 : 0}rem;
-  //transition: all 0.2s ease-in-out;
 `
 
 interface SectionContainerSyled {
@@ -85,6 +81,11 @@ export const SectionContainer = styled.div<SectionContainerSyled>`
 export const SectionTitle = styled.h4`
   font-size: 2rem;
   text-transform: capitalize;
+  min-height: 48px;
+`
+
+export const SectionContentContainer = styled.div`
+
 `
 
 export const SectionContent = styled.section`
@@ -96,7 +97,7 @@ export const SectionContent = styled.section`
 `
 
 export const SectionContentAside = styled.div`
-  flex: 1;
+  flex: 0.8;
   opacity: 0.6;
 `
 
@@ -111,7 +112,12 @@ export const SectionContentMainTitle = styled.h4`
   font-size: 1.2rem;
 `
 
-export const SectionContentMainDescription = styled.p`
+export const SectionContentMainInfo = styled.div`
+
+  img {
+    width: 100%;
+    border-radius: 0.4em;
+  }
 `
 
 export const SectionContentStack = styled.div`
