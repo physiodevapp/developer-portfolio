@@ -14,12 +14,37 @@ export const Layout = styled.div`
   } 
 `
 
-export const Header = styled.header`
+export const StickyContainer = styled.div`
   position: sticky;
-  top: 0;
+  top: 60vh;
+  height: 20vh;
   width: 100%;
-  height: 100vh;
   display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+`
+
+export const Header = styled.header``;
+
+export const Footer = styled.footer`
+  width: 100%;
+  height: 35px;
+  margin: 0em 0em 0em 1.6em;
+
+  ul {
+    height: inherit;
+    display: flex;
+    gap: 1em;
+    list-style: none;
+
+    li {
+      cursor: pointer;
+    }
+
+    img {
+      height: 100%;
+    }
+  }
 `;
 
 export const Main = styled.main` 
@@ -30,26 +55,39 @@ export const Main = styled.main`
   flex-wrap: wrap;
 `
 
-export const HeadShotContainer = styled.figure`
+export const HeadShotContainer = styled.div`
   position: fixed;
   top: 20%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 45%;
-  height: 30vh;
-  background: red;
+  transform: translateX(-40%);
+  width: 1100px;
+  height: 50vh;
   z-index: 10;
+  border: 1px solid;
+  transform-origin: center;
 `
 
 export const HeadShotImage = styled.img`
-  height: 100%;
+  height: 320px;
+  padding: 1.6em;
+  position: relative;
+  left: 0%;
+  transform: translate(10%, 10%);
+`
+
+export const HeadShotSpeech = styled.p`
+  width: 350px;
+  height: 60%;
+  //background: red;
+  position: absolute;
+  left: 300px;
+  top: 75px;
 `
 
 export const SectionListContainer = styled.section`
   width: 100%;
-  height: 40%;
-  position: absolute;
-  bottom: 0;
+  position: relative;
+  z-index: 20;
 
   ul {
     list-style: none;
@@ -58,6 +96,7 @@ export const SectionListContainer = styled.section`
     li {
       cursor: pointer;
       line-height: 2.2rem;
+      text-transform: uppercase;
     }
   }
 `
@@ -70,12 +109,16 @@ export const ListMarker = styled.div`
 `
 
 interface SectionContainerSyled {
-  $minheight?: number
+  $minheight?: number,
+  $justify?: "start" | "center"
 }
 
 export const SectionContainer = styled.div<SectionContainerSyled>`
-  min-height: ${({$minheight}) => $minheight ? `${$minheight}` : 30 }vh;
+  min-height: ${({$minheight}) => $minheight ? `${$minheight}` : 50 }vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: ${({$justify}) => $justify ? `${$justify}` : "start" };
 `
 
 export const SectionTitle = styled.h4`
@@ -85,7 +128,7 @@ export const SectionTitle = styled.h4`
 `
 
 export const SectionContentContainer = styled.div`
-
+  padding: 0em 1em;
 `
 
 export const SectionContent = styled.section`
@@ -95,10 +138,17 @@ export const SectionContent = styled.section`
   padding: 1em 0em;
   margin: 0em 0em 2em;
 `
-
-export const SectionContentAside = styled.div`
-  flex: 0.8;
+interface SectionContentAsideStyled {
+  $highlight: boolean
+}
+export const SectionContentAside = styled.div<SectionContentAsideStyled>`
+  flex: 1;
   opacity: 0.6;
+  height:28px;
+  text-align: right;
+  position: relative;
+  padding-right: 1em;
+  background-color: ${($highlight) => $highlight ? '#dde4ee' : '#dde4ee00'};
 `
 
 export const SectionContentMain = styled.div`
@@ -137,7 +187,46 @@ export const SectionContentStack = styled.div`
   }
 `
 
-export const AboutMe = styled.p`
+export const AboutMe = styled.div`
   line-height: 2em;
   font-size: 1.2em;
+
+  p {
+    margin-bottom: 1em;
+  }
+`
+
+export const SectionContentFormContainer = styled.div`
+
+  form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 1em;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      
+      p:last-of-type {
+        font-style: italic;
+      }
+
+    }
+
+    div:last-of-type {
+      flex: unset;
+      width: 100%;
+    }
+
+    button {
+      width: 40%;
+      position: relative;
+      right: 0%;
+    }
+
+  }
+  
 `
