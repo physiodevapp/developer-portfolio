@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { SubmitButton, TextArea, TextInput } from './ContactFormStyled';
+import { Field, SubmitButton, TextArea, TextInput } from './ContactFormStyled';
 
 type FormValues = {
   name: string;
@@ -30,7 +30,7 @@ export const ContactFormComponent = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* Name Field */}
-      <div>
+      <Field>
         <label htmlFor="name">Name:</label>
         <TextInput
           id="name"
@@ -38,10 +38,10 @@ export const ContactFormComponent = () => {
           type="text"
         />
         {errors.name && <p>* {errors.name.message}</p>}
-      </div>
+      </Field>
 
       {/* Email Field */}
-      <div>
+      <Field>
         <label htmlFor="email">Email:</label>
         <TextInput
           id="email"
@@ -55,10 +55,10 @@ export const ContactFormComponent = () => {
           type="email"
         />
         {errors.email && <p>* {errors.email.message}</p>}
-      </div>
+      </Field>
 
       {/* Message Field */}
-      <div>
+      <Field>
         <label htmlFor="message">Message:</label>
         <TextArea
           id="message"
@@ -66,10 +66,10 @@ export const ContactFormComponent = () => {
           {...register("message", { required: "Message is required" })}
         />
         {errors.message && <p>* {errors.message.message}</p>}
-      </div>
+      </Field>
 
       {/* Submit Button */}
-      <SubmitButton type="submit">Submit</SubmitButton>
+      <SubmitButton type="submit">Get in touch</SubmitButton>
     </form>
   );
 }

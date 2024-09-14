@@ -1,16 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Header,
-  HeadShotContainer,
-  HeadShotImage,
   Layout,
-  ListMarker,
+  IndexMarker,
   Main,
-  SectionListContainer,
+  Index,
   AboutMe, SectionContainer, SectionContent, SectionTitle, SectionContentMainInfo, SectionContentStack, SectionContentMain, SectionContentAside, SectionContentMainTitle, SectionContentContainer, SectionContentFormContainer,
-  Footer,
-  StickyContainer,
-  HeadShotSpeech
+  Profile,
+  Name,
+  Position,
+  Maxim,
+  MaximQuotes,
+  Footer
 } from "./PortfolioStyled";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -23,29 +24,25 @@ import oxygenShopShot from '../../assets/img/oxygen shop shot.png';
 import oxygenPhotosShot from '../../assets/img/oxygen photos shot.png';
 import mirandaDashboardShot from '../../assets/img/dashboard shot.png';
 import mirandaWebShot from '../../assets/img/web shot.png';
-import linkedIn from '../../assets/img/linkedin.png';
-import github from '../../assets/img/github.png';
 import { ContactFormComponent } from "../../components/ContactForm/ContactFormComponent";
-
+import { TypeAnimation } from "react-type-animation";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { GrDeploy } from "react-icons/gr";
+import { ReactTyped } from "react-typed";
+import { create } from "domain";
 
 // Register ScrollToPlugin and ScrollTrigger
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export const PortfolioPage = () => {
   const mainRef = useRef<HTMLDivElement>(null);
-  const headShotContainerRef = useRef<HTMLDivElement>(null);
-  const headShotImageRef = useRef<HTMLImageElement>(null);
-  const headShotSpeechRef = useRef<HTMLImageElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
 
   const aboutSectionRef = useRef<HTMLDivElement>(null);
   const experienceSectionRef = useRef<HTMLDivElement>(null);
   const contactSectionRef = useRef<HTMLDivElement>(null);
   
   const listMarkerRef = useRef<HTMLDivElement>(null);
-
-  const [visibleSectionInformation, setVisibleSectionInformation] = useState<string>("");
-  const [showVisibleSectionInformation, setShowVisibleSectionInformation] = useState<boolean>(false);
-  const [visibleSectionIndex, setVisibleSectionIndex] = useState<number>(-1);
 
   const sectionRefs = [
     { ref: aboutSectionRef, title: "About Me"  },
@@ -54,7 +51,6 @@ export const PortfolioPage = () => {
   ];
 
   const experienceRefs = useRef<HTMLElement[]>([]);
-  const experienceDateRefs = useRef<HTMLElement[]>([]);
 
   const experienceData = [
     {
@@ -62,7 +58,9 @@ export const PortfolioPage = () => {
       title: 'Miranda Dashboard',
       imgSrc: mirandaDashboardShot,
       stack: ['React', 'Custom API', 'Redux', 'Typescript'],
-      description: 'A powerful dashboard for managing tasks, monitoring analytics, and integrating custom APIs using Redux for state management.',
+      description: 'A dashboard for managing tasks, monitoring analytics, and integrating custom APIs using Redux for state management.',
+      repoSrc: 'https://github.com/physiodevapp/dashboard-miranda',
+      demoSrc: 'http://physiodev-miranda-dashboard.s3-website.eu-north-1.amazonaws.com/login',
     },
     {
       year: '2024',
@@ -70,6 +68,8 @@ export const PortfolioPage = () => {
       imgSrc: mirandaWebShot,
       stack: ['Javascript', 'Sass'],
       description: 'A responsive web application built with modern JavaScript and styled with Sass for a clean and dynamic user interface.',
+      repoSrc: 'https://github.com/physiodevapp/web-miranda',
+      demoSrc: 'https://physiodevapp.github.io/web-miranda/',
     },
     {
       year: '2024',
@@ -77,6 +77,8 @@ export const PortfolioPage = () => {
       imgSrc: oxygenPhotosShot,
       stack: ['React', 'External API', 'Redux'],
       description: 'A photo gallery application that fetches images from an external API, using Redux for state management and React for dynamic rendering.',
+      repoSrc: 'https://github.com/physiodevapp/oxygen-photos',
+      demoSrc: 'http://physiodev-photography.s3-website.eu-north-1.amazonaws.com/',
     },
     {
       year: '2024',
@@ -84,6 +86,8 @@ export const PortfolioPage = () => {
       imgSrc: oxygenShopShot,
       stack: ['Javascript', 'Cookies', 'BEM'],
       description: 'An e-commerce platform featuring a product catalog, cart functionality, and persistent sessions using cookies, built with a BEM CSS methodology.',
+      repoSrc: 'https://github.com/physiodevapp/oxygen-shop',
+      demoSrc: 'https://physiodevapp.github.io/oxygen-shop/',
     },
     {
       year: '2023',
@@ -91,6 +95,8 @@ export const PortfolioPage = () => {
       imgSrc: musicContactShot,
       stack: ['Express', 'Node', 'Bootstrap'],
       description: 'A music-related contact form built with Express and Node.js for backend functionality, styled with Bootstrap for responsive design.',
+      repoSrc: 'https://github.com/music-contact/music-contact',
+      demoSrc: 'https://music-contact.fly.dev/',
     },
     {
       year: '2023',
@@ -98,6 +104,8 @@ export const PortfolioPage = () => {
       imgSrc: tetrisShot,
       stack: ['Javascript', 'OOP'],
       description: 'A classic Tetris game implemented in JavaScript, featuring object-oriented programming principles for game logic.',
+      repoSrc: 'https://github.com/physiodevapp/tetris',
+      demoSrc: 'https://physiodevapp.github.io/tetris/',
     },
   ];
 
@@ -111,7 +119,7 @@ export const PortfolioPage = () => {
         duration: 1.4,
         scrollTo: { 
           y: sectionRef.current, 
-          offsetY: sectionIndex === 2 ? 20 : 130, 
+          offsetY: 0, 
         }, // Scroll with offset for headers
         ease: "power3.inOut",
         onStart: () => {
@@ -132,8 +140,8 @@ export const PortfolioPage = () => {
         // Create a ScrollTrigger for each section
         ScrollTrigger.create({
           trigger: refObject.ref.current,
-          start: "top center-=0%",  // Start when the section's top is in the center of the viewport
-          end: "bottom center-=0%", // End when the section's bottom is in the center of the viewport
+          start: "top center",
+          end: "bottom center",
           onEnter: () => {
             const scrollAnimation = gsap.getTweensOf(window)?.[0];
   
@@ -154,9 +162,9 @@ export const PortfolioPage = () => {
                 duration: 0.4,
                 ease: "power3.out",
               });
-            }
+            }            
           },
-          markers: false,
+          markers: true,
         });
       }
     });
@@ -166,234 +174,46 @@ export const PortfolioPage = () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);  
-
-  // HeadShot
-  useEffect(() => {
-    if (mainRef.current && headShotContainerRef.current && headShotImageRef.current) {
-      const timeline_1 = gsap.timeline({
-        scrollTrigger: {
-          trigger: mainRef.current,
-          start: "top top",
-          end: "top+=10% top",
-          scrub: true,
-          markers: false,
-        },
-      });
-
-      timeline_1.to(headShotContainerRef.current, { 
-        x: "-650px",
-        width: "835px", 
-        height: "52.5vh",
-      });
-      timeline_1.to(headShotImageRef.current, {
-        x: "0px",
-        y: "0px",
-        height: "260px",
-      }, "<");
-
-      const timeline_2 = gsap.timeline({
-        scrollTrigger: {
-          trigger: mainRef.current,
-          start: "bottom-=18% bottom-=20%",
-          end: "bottom-=4% bottom",
-          scrub: true,
-          markers: false,
-        },
-      });
-
-      timeline_2.to(headShotContainerRef.current, { 
-        x: "-650px",
-        width: "520px",
-      });
-
-    }
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
-
-  // Experience Section Title
-  useEffect(() => {
-    if (experienceSectionRef.current) {
-      gsap.fromTo(
-        experienceSectionRef.current.firstElementChild,
-        { 
-          opacity: 1,
-        },
-        {
-          opacity: 0,
-          scrollTrigger: {
-            trigger: experienceSectionRef.current.firstElementChild,
-            start: "top center+=150",
-            end: "bottom center",
-            scrub: true,
-            toggleActions: "play none none reverse",
-            markers: false,
-          },
-        }
-      );
-    }
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);  
-  
-  // Section description
-  useEffect(() => {
-    experienceRefs.current.forEach((experience, index) => {
-      const text = experienceData[index].description;
-
-      if (experience) {
-        gsap.fromTo(
-          experience,
-          { 
-            opacity: 1, 
-            y: 0 
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scrollTrigger: {
-              trigger: experience,
-              start: "top center+=150",
-              end: "bottom center",
-              scrub: true,
-              toggleActions: "play none none reverse",
-              onUpdate: (self) => {
-                const progress = self.progress;
-                const viewableText = (progress > 0.2 && progress < 1 && index !== experienceRefs.current.length - 1) || 
-                (progress > 0.2 && progress < 0.7)                
-
-                if (viewableText) { 
-                  setShowVisibleSectionInformation(true);
-                  setVisibleSectionInformation(text);
-                  setVisibleSectionIndex(index);
-                  console.log('visibleSectionIndex ',index);
-                  console.log(!!experienceDateRefs.current[index]);
-                } else {
-                  setShowVisibleSectionInformation(false);
-                  setVisibleSectionIndex(-1);
-                  console.log('visibleSectionIndex ',index);
-                  console.log(!!experienceDateRefs.current[index]);
-                }
-              },
-              markers: false,
-            },
-          }
-        );
-      }
-    });
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
-  
-  /*
-  useEffect(() => {
-    experienceDateRefs.current.forEach((experienceDate) => {
-      if (experienceDate) {
-        gsap.fromTo(
-          experienceDate,
-          {  
-           //color: "#dde4ee",
-           //backgroundColor: "#0f172a",
-          },
-          {
-            color: "#0f172a",
-            backgroundColor: "#dde4ee",
-            duration: 0.2,
-            scrollTrigger: {
-              trigger: experienceDate,
-              start: "top center+=150",
-              end: "bottom center+=150",
-              scrub: true,
-              toggleActions: "play none none reverse",
-              onUpdate: (self) => { 
- 
-               console.log(self.progress);
-              },
-             //  onLeave: () => {
-             //    gsap.to(experienceDate, { 
-             //     color: "#dde4ee",
-             //     backgroundColor: "#0f172a00",
-             //     duration:0.4,
-             //    });
-             //  },
-             //  onEnterBack: () => {
-             //   gsap.to(experienceDate, {
-             //     color: "#0f172a",
-             //     backgroundColor: "#dde4ee",
-             //     duration: 0.4,
-             //   });
-             //  },
-             //  onUpdate: (self) => {
-             //    if (self.direction === -1) {
-             //      // Animate back to x: 0 when scrolling reverses
-             //      gsap.to(experienceDate, {
-             //       color: "#0f172a",
-             //       backgroundColor: "#dde4ee",
-             //       duration: 0.4,
-             //      });
-             //    }
-             //  },
-              markers: true,
-            },
-          }
-        );
-      }
-    });
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
-  */
-
-
   
   return (
     <>
       <Layout>
-        <StickyContainer>
-          <Header>
-            <SectionListContainer>
-              <ListMarker ref={listMarkerRef} className="animate__animated animate__flash animate__infinite animate__slower">{">"}</ListMarker>
-              <nav>
-                <ul>
-                  { 
-                    sectionRefs.map((sectionRefObj, index) => (
-                      <li key={index} onClick={() => scrollToSection(sectionRefObj.ref)}>{sectionRefObj.title}</li>
-                    )) 
-                  }
-                </ul>
-              </nav>
-            </SectionListContainer>
-            <HeadShotContainer ref={headShotContainerRef}>
-              <HeadShotImage ref={headShotImageRef} src={headShotAsset} />
-              <HeadShotSpeech ref={headShotSpeechRef}
-                className={`animate__animated ${showVisibleSectionInformation ? 'animate__fadeIn' : 'animate__fadeOut animate__faster'}`}
-                >
-                {visibleSectionInformation}
-              </HeadShotSpeech>
-            </HeadShotContainer>
-          </Header>
-          <Footer>
-            <ul>
-              <li>
-                  <a href="https://www.linkedin.com/in/edu-gamboa/">
-                    <img src={linkedIn} alt="linkedIn"/>
-                  </a>
-              </li>
-              <li>
-                  <a href="https://github.com/physiodevapp">
-                    <img src={github} alt="github" />
-                  </a>
-              </li>
-            </ul>
-          </Footer>
-        </StickyContainer>
+        <Header>
+          <Profile style={{padding: "calc(50vh - 200px) 0% 0%"}}>
+            <Name>Eduardo Gamboa</Name>
+            <Position>Full Stack Developer</Position>
+            <Maxim>
+              <MaximQuotes/>
+              <ReactTyped 
+                strings={[
+                  '<span style="color: #00eaff; font-weight: 600;">&lt;</span>Better code<span style="color: #00eaff; font-weight: 600;">&gt;</span>',
+                  '<span style="color: #00eaff; font-weight: 600;">&lt;</span>Better lives<span style="color: #00eaff; font-weight: 600;"><span style="font-size: 1.2rem; line-height: 1.2rem; vertical-align: middle; display: inline-flex; padding: 0rem 0rem 0.3rem 0.3rem;">/</span>&gt;</span>',
+                ]}
+                typeSpeed={40} 
+                backSpeed={60}
+                backDelay={4000}
+                startDelay={0}
+                loop={true}
+                smartBackspace={true}
+                />
+              <MaximQuotes/>
+            </Maxim>
+          </Profile>
+          <Index>
+            <IndexMarker ref={listMarkerRef}>{">"}</IndexMarker>
+            <nav>
+              <ul>
+                { 
+                  sectionRefs.map((sectionRefObj, index) => (
+                    <li key={index} onClick={() => scrollToSection(sectionRefObj.ref)}>{sectionRefObj.title}</li>
+                  )) 
+                }
+              </ul>
+            </nav>
+          </Index>
+        </Header>
         <Main ref={mainRef}>
-          <SectionContainer ref={aboutSectionRef} $minheight={100} $justify={"center"}>
-            <SectionTitle>Eduardo Gamboa</SectionTitle>
+          <SectionContainer ref={aboutSectionRef} $minheight={100}>
             <SectionContent>
               <AboutMe>
                 <p>
@@ -406,7 +226,7 @@ export const PortfolioPage = () => {
             </SectionContent>
           </SectionContainer>
           <SectionContainer ref={experienceSectionRef}>
-            <SectionTitle className="fixed-title">Projects</SectionTitle>
+            <SectionTitle>Projects</SectionTitle>
             <SectionContentContainer>
             {
               experienceData.map((experience, index) => (
@@ -418,26 +238,25 @@ export const PortfolioPage = () => {
                   }}
                   key={index}
                   >
-                  <SectionContentAside
-                    ref={(element) => {
-                      if (element) {
-                        experienceDateRefs.current[index] = element;
-                      }
-                    }}
-                    key={`date_${index}`}
-                    $highlight={experienceData[visibleSectionIndex] ? true : false}
-                    >{experience.year}
+                  <SectionContentAside key={`date_${index}`} $imgSrc={ experience.imgSrc }>
+                    <figure>
+                      <img src={ experience.imgSrc }/>
+                    </figure>
                   </SectionContentAside>
                   <SectionContentMain>
-                    <SectionContentMainTitle>{experience.title}</SectionContentMainTitle>
+                    <SectionContentMainTitle>
+                      {experience.title}
+                      <FaGithub size={24} onClick={() => window.open(experience.repoSrc)}/>
+                      <GrDeploy size={24} onClick={() => window.open(experience.demoSrc)}/>
+                    </SectionContentMainTitle>
                     <SectionContentMainInfo>
-                    <img src={ experience.imgSrc }/>
+                    { experience.description }
                     </SectionContentMainInfo>
                   <SectionContentStack>
                     <ul>
                       {
                         experience.stack.map((technology, index) => (
-                          <li key={index}>{technology}</li>
+                          <li key={index}>{ technology }</li>
                         ))
                       }
                     </ul>
@@ -447,10 +266,8 @@ export const PortfolioPage = () => {
               ))
             }
             </SectionContentContainer>
-
           </SectionContainer>
-          <SectionContainer ref={contactSectionRef} $minheight={100} $justify={"center"}>
-            <SectionTitle>Contact</SectionTitle>
+          <SectionContainer ref={contactSectionRef} $minheight={100}>
             <SectionContent>
               <SectionContentContainer>
                 <SectionContentFormContainer>
@@ -460,6 +277,12 @@ export const PortfolioPage = () => {
             </SectionContent>
           </SectionContainer>
         </Main>
+        <Footer ref={footerRef}>
+            <ul>
+              <li><FaGithub size={30} onClick={() => window.open("https://github.com/physiodevapp")}/></li>
+              <li><FaLinkedin size={30} onClick={() => window.open("https://www.linkedin.com/in/edu-gamboa/")}/></li>
+            </ul>
+        </Footer>
       </Layout>
     </>
   );
