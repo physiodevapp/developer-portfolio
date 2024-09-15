@@ -17,7 +17,7 @@ export const Field = styled.div`
 `
 
 export const TextInput = styled.input`
-  padding: 1em;
+  padding: 0.6em;
   border-radius: 0.4em;
   outline: none;
   border: none;
@@ -32,7 +32,7 @@ export const SocialMedia = styled.ul`
   align-items: center;
   flex-direction: row;
   gap: 2em;
-  margin-top: 1.4em;
+  margin-top: 1.8em;
 
   li {
     line-height: 0;
@@ -51,7 +51,7 @@ export const SubmitButton = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
-  margin-top: 1.4em;
+  margin-top: 1.8em;
 
   svg {
     margin-right: 0.4em;

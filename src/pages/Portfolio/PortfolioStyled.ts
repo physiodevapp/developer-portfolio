@@ -29,6 +29,7 @@ export const Header = styled.header`
   @media only screen and (max-width: 1000px) {
     position: relative;
     padding: 0em 1em;
+    min-height: 440px;
   }
 `
 
@@ -112,7 +113,7 @@ export const IndexMarker = styled.div`
 
 export const SocialMedia = styled.section`
   position: absolute;
-  top: 135%;
+  top: 140%;
   width: 100%;
   display: inline-flex;
   align-items: center;

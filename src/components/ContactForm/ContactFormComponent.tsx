@@ -62,7 +62,7 @@ export const ContactFormComponent = () => {
         <label htmlFor="message">{!errors.message ? 'Message:' : <span>{errors.message.message}</span>}</label>
         <TextArea
           id="message"
-          rows={6}
+          rows={7}
           {...register("message", { required: "Message is required" })}
         />
       </Field>

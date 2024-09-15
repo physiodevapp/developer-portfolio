@@ -44,8 +44,8 @@ export const PortfolioPage = () => {
   const listMarkerRef = useRef<HTMLDivElement>(null);
 
   const sectionRefs = [
-    { ref: aboutSectionRef, title: "About Me"  },
-    { ref: experienceSectionRef, title: "Projects"  },
+    { ref: aboutSectionRef, title: "About Me" },
+    { ref: experienceSectionRef, title: "Projects" },
     { ref: contactSectionRef, title: "Get in touch" },
   ];
 
@@ -56,7 +56,7 @@ export const PortfolioPage = () => {
       year: '2024',
       title: 'Miranda Dashboard',
       imgSrc: mirandaDashboardShot,
-      stack: ['React', 'Custom API', 'Redux', 'Typescript'],
+      stack: ['React', 'Laravel/PHP', 'Redux', 'Typescript'],
       description: 'A dashboard for managing tasks, monitoring analytics, and integrating custom APIs using Redux for state management.',
       repoSrc: 'https://github.com/physiodevapp/dashboard-miranda',
       demoSrc: 'http://physiodev-miranda-dashboard.s3-website.eu-north-1.amazonaws.com/login',
@@ -137,7 +137,7 @@ export const PortfolioPage = () => {
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: mainRef.current,
-          start: "bottom-=450 center+=50",
+          start: "bottom-=380 center+=50",
           end: "bottom bottom",
           scrub: true,
           markers: false,
@@ -147,7 +147,7 @@ export const PortfolioPage = () => {
       const xValue = `${socialMediaContainerRef.current.clientWidth + 50}px`
       timeline.to(socialMediaContainerRef.current, { 
         x: xValue,
-        duration: 1,
+        duration: 1.4,
       });
 
       timeline.to(socialMediaContainerRef.current.querySelectorAll('span'), { 
