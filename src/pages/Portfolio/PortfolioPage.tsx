@@ -1,225 +1,288 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Header,
-  HeadShotContainer,
-  HeadShotImage,
   Layout,
-  ListMarker,
+  IndexMarker,
   Main,
-  SectionListContainer,
+  Index,
+  AboutMe, SectionContainer, SectionContent, SectionTitle, SectionContentMainInfo, SectionContentStack, SectionContentMain, SectionContentAside, SectionContentMainTitle, SectionContentContainer, SectionContentFormContainer,
+  Profile,
+  Name,
+  Position,
+  Maxim,
+  MaximQuotes,
+  Footer
 } from "./PortfolioStyled";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // Import ScrollToPlugin
+import 'animate.css';
 import headShotAsset from "../../assets/img/headshot.png";
-import { AboutMe, SectionContainer, SectionContent, SectionTitle, SectionContentMainDescription, SectionContentStack, SectionContentMain, SectionContentAside, SectionContentMainTitle } from './PortfolioStyled';
+import tetrisShot from '../../assets/img/tetris shot.png';
+import musicContactShot from '../../assets/img/music contact shot.png'
+import oxygenShopShot from '../../assets/img/oxygen shop shot.png';
+import oxygenPhotosShot from '../../assets/img/oxygen photos shot.png';
+import mirandaDashboardShot from '../../assets/img/dashboard shot.png';
+import mirandaWebShot from '../../assets/img/web shot.png';
+import { ContactFormComponent } from "../../components/ContactForm/ContactFormComponent";
+import { TypeAnimation } from "react-type-animation";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { GrDeploy } from "react-icons/gr";
+import { ReactTyped } from "react-typed";
+import { create } from "domain";
 
 // Register ScrollToPlugin and ScrollTrigger
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export const PortfolioPage = () => {
   const mainRef = useRef<HTMLDivElement>(null);
-  const headShotContainerRef = useRef<HTMLDivElement>(null);
-  const headShotImageRef = useRef<HTMLImageElement>(null);
-  const topSectionRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
   const aboutSectionRef = useRef<HTMLDivElement>(null);
   const experienceSectionRef = useRef<HTMLDivElement>(null);
-  const educationSectionRef = useRef<HTMLDivElement>(null);
   const contactSectionRef = useRef<HTMLDivElement>(null);
+  
   const listMarkerRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement>, index: number) => { // click
-    if (sectionRef.current && !timelineRef.current?.isActive()) {
-      const targetPosition = sectionRef.current.offsetTop; // Get the vertical position of the element
-  
-      const timeline = gsap.timeline({
-        defaults: { duration: 0.8, ease: "power2.inOut" }, // Set duration and ease for both animations
-      });
-  
-      timeline.to(window, {
-        scrollTo: {
-          y: targetPosition,
-          offsetY: 0 // Scroll to the element's vertical position with offset
-        },
-      });
-  
-      timeline.to(listMarkerRef.current, {
-        y: index * 35, // Adjust based on the list item height
-      }, 0); // Delay between animations
+  const sectionRefs = [
+    { ref: aboutSectionRef, title: "About Me"  },
+    { ref: experienceSectionRef, title: "Projects"  },
+    { ref: contactSectionRef, title: "Get in touch" },
+  ];
 
-      timelineRef.current = timeline;
-    }
-  };  
+  const experienceRefs = useRef<HTMLElement[]>([]);
 
-  useEffect(() => {
-    if (headShotContainerRef.current && mainRef.current) {
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: mainRef.current,
-          start: "15% top",
-          end: "top+=32% top",
-          scrub: true,
-          markers: false,
-        },
-      });
+  const experienceData = [
+    {
+      year: '2024',
+      title: 'Miranda Dashboard',
+      imgSrc: mirandaDashboardShot,
+      stack: ['React', 'Custom API', 'Redux', 'Typescript'],
+      description: 'A dashboard for managing tasks, monitoring analytics, and integrating custom APIs using Redux for state management.',
+      repoSrc: 'https://github.com/physiodevapp/dashboard-miranda',
+      demoSrc: 'http://physiodev-miranda-dashboard.s3-website.eu-north-1.amazonaws.com/login',
+    },
+    {
+      year: '2024',
+      title: 'Miranda Web',
+      imgSrc: mirandaWebShot,
+      stack: ['Javascript', 'Sass'],
+      description: 'A responsive web application built with modern JavaScript and styled with Sass for a clean and dynamic user interface.',
+      repoSrc: 'https://github.com/physiodevapp/web-miranda',
+      demoSrc: 'https://physiodevapp.github.io/web-miranda/',
+    },
+    {
+      year: '2024',
+      title: 'Oxygen Photos',
+      imgSrc: oxygenPhotosShot,
+      stack: ['React', 'External API', 'Redux'],
+      description: 'A photo gallery application that fetches images from an external API, using Redux for state management and React for dynamic rendering.',
+      repoSrc: 'https://github.com/physiodevapp/oxygen-photos',
+      demoSrc: 'http://physiodev-photography.s3-website.eu-north-1.amazonaws.com/',
+    },
+    {
+      year: '2024',
+      title: 'Oxygen Shop',
+      imgSrc: oxygenShopShot,
+      stack: ['Javascript', 'Cookies', 'BEM'],
+      description: 'An e-commerce platform featuring a product catalog, cart functionality, and persistent sessions using cookies, built with a BEM CSS methodology.',
+      repoSrc: 'https://github.com/physiodevapp/oxygen-shop',
+      demoSrc: 'https://physiodevapp.github.io/oxygen-shop/',
+    },
+    {
+      year: '2023',
+      title: 'Music Contact',
+      imgSrc: musicContactShot,
+      stack: ['Express', 'Node', 'Bootstrap'],
+      description: 'A music-related contact form built with Express and Node.js for backend functionality, styled with Bootstrap for responsive design.',
+      repoSrc: 'https://github.com/music-contact/music-contact',
+      demoSrc: 'https://music-contact.fly.dev/',
+    },
+    {
+      year: '2023',
+      title: 'Tetris game',
+      imgSrc: tetrisShot,
+      stack: ['Javascript', 'OOP'],
+      description: 'A classic Tetris game implemented in JavaScript, featuring object-oriented programming principles for game logic.',
+      repoSrc: 'https://github.com/physiodevapp/tetris',
+      demoSrc: 'https://physiodevapp.github.io/tetris/',
+    },
+  ];
 
-      timeline.to(headShotContainerRef.current, { x: "-50%" });
-      timeline.to(headShotImageRef.current, { x: "20%" }, "<");
+  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement>) => {
+    if (sectionRef.current) {
+      const sectionIndex = sectionRefs.findIndex(
+        (refObject) => refObject.ref.current === sectionRef.current
+      );
 
-      return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
-    }
-  }, []);
-
-  useEffect(() => {
-    if (listMarkerRef.current && mainRef.current) {
-      const sections = [
-        topSectionRef.current,
-        aboutSectionRef.current,
-        experienceSectionRef.current,
-        educationSectionRef.current,
-        contactSectionRef.current,
-      ];
-
-      const updateListMarkerPosition = (index: number) => { // mouse
-        if (listMarkerRef.current && !timelineRef.current?.isActive()) {
-          const timeline = gsap.timeline({
-            defaults: { duration: 0.4, ease: "power2.inOut" }, // Set duration and ease for both animations
+      gsap.to(window, {
+        duration: 1.4,
+        scrollTo: { 
+          y: sectionRef.current, 
+          offsetY: 0, 
+        }, // Scroll with offset for headers
+        ease: "power3.inOut",
+        onStart: () => {
+          gsap.to(listMarkerRef.current, {
+            y: sectionIndex * 35, // Adjust marker position
+            duration: 0.4,
+            ease: "power3.out",
           });
-
-          timeline.to(listMarkerRef.current, {
-            y: index * 35, // Adjust based on the list item height
-          }, 0); // Delay between animations
-
-          timelineRef.current = timeline;
         }
-      };
-
-      const scrollTriggers = sections
-        .map((section, index) => {
-          if (section) {
-            return ScrollTrigger.create({
-              trigger: section,
-              start: "top top",
-              end: "bottom top",
-              scrub: true,
-              onEnter: () => updateListMarkerPosition(index),
-              onLeave: () => updateListMarkerPosition(index),
-              onEnterBack: () => updateListMarkerPosition(index),
-              onLeaveBack: () => updateListMarkerPosition(index),
-              markers: false,
-            });
-          }
-          return null;
-        })
-        .filter((trigger) => trigger !== null);
-
-      return () => {
-        scrollTriggers.forEach((trigger) => trigger.kill());
-      };
+      });
     }
-  }, []);
+  };
 
+  // Portfolio Index
   useEffect(() => {
-    return () => {
-      if (timelineRef.current) {
-        timelineRef.current.kill(); // Kill the current timeline if needed
-      }
-    };
-  }, []);
+    sectionRefs.forEach((refObject, index) => {
+      if (refObject.ref.current) {
+        // Create a ScrollTrigger for each section
+        ScrollTrigger.create({
+          trigger: refObject.ref.current,
+          start: "top center",
+          end: "bottom center",
+          onEnter: () => {
+            const scrollAnimation = gsap.getTweensOf(window)?.[0];
   
-
+            if (!scrollAnimation || !scrollAnimation.isActive()) {
+              gsap.to(listMarkerRef.current, {
+                y: index * 35, // Adjust marker position based on section index
+                duration: 0.4,
+                ease: "power3.out",
+              });
+            }
+          },
+          onEnterBack: () => {
+            const scrollAnimation = gsap.getTweensOf(window)?.[0];
+  
+            if (!scrollAnimation || !scrollAnimation.isActive()) {
+              gsap.to(listMarkerRef.current, {
+                y: index * 35, // Adjust marker position based on section index
+                duration: 0.4,
+                ease: "power3.out",
+              });
+            }            
+          },
+          markers: true,
+        });
+      }
+    });
+  
+    // Cleanup: Kill all ScrollTriggers when component unmounts
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);  
+  
   return (
     <>
       <Layout>
         <Header>
-          <SectionListContainer>
-            <ListMarker ref={listMarkerRef}>{">"}</ListMarker>
-            <ul>
-              <li onClick={() => scrollToSection(aboutSectionRef, 0)}>About</li>
-              <li onClick={() => scrollToSection(experienceSectionRef, 1)}>Projects</li>
-              <li onClick={() => scrollToSection(educationSectionRef, 2)}>Education</li>
-              <li onClick={() => scrollToSection(contactSectionRef, 3)}>Contact</li>
-            </ul>
-          </SectionListContainer>
-          <HeadShotContainer ref={headShotContainerRef}>
-            <HeadShotImage ref={headShotImageRef} src={headShotAsset} />
-          </HeadShotContainer>
+          <Profile style={{padding: "calc(50vh - 200px) 0% 0%"}}>
+            <Name>Eduardo Gamboa</Name>
+            <Position>Full Stack Developer</Position>
+            <Maxim>
+              <MaximQuotes/>
+              <ReactTyped 
+                strings={[
+                  '<span style="color: #00eaff; font-weight: 600;">&lt;</span>Better code<span style="color: #00eaff; font-weight: 600;">&gt;</span>',
+                  '<span style="color: #00eaff; font-weight: 600;">&lt;</span>Better lives<span style="color: #00eaff; font-weight: 600;"><span style="font-size: 1.2rem; line-height: 1.2rem; vertical-align: middle; display: inline-flex; padding: 0rem 0rem 0.3rem 0.3rem;">/</span>&gt;</span>',
+                ]}
+                typeSpeed={40} 
+                backSpeed={60}
+                backDelay={4000}
+                startDelay={0}
+                loop={true}
+                smartBackspace={true}
+                />
+              <MaximQuotes/>
+            </Maxim>
+          </Profile>
+          <Index>
+            <IndexMarker ref={listMarkerRef}>{">"}</IndexMarker>
+            <nav>
+              <ul>
+                { 
+                  sectionRefs.map((sectionRefObj, index) => (
+                    <li key={index} onClick={() => scrollToSection(sectionRefObj.ref)}>{sectionRefObj.title}</li>
+                  )) 
+                }
+              </ul>
+            </nav>
+          </Index>
         </Header>
         <Main ref={mainRef}>
-          <SectionContainer $minheight={100}>
-            <SectionTitle>Test</SectionTitle>
-            <SectionContent/>
-          </SectionContainer>
-          <SectionContainer ref={aboutSectionRef}>
-            <SectionTitle>About</SectionTitle>
+          <SectionContainer ref={aboutSectionRef} $minheight={100}>
             <SectionContent>
               <AboutMe>
-                Dedicated to <b>web development</b> that connects people. I thrive on blending <b>logic and creativity</b> through programming to build practical solutions that foster more meaningful <b>human connections</b>.
+                <p>
+                  Dedicated to <b>web development</b> that connects people. I thrive on blending <b>logic and creativity</b> through programming to build practical solutions that foster more meaningful <b>human connections</b>.
+                </p>
+                <p>
+                  When I'm not coding, I love to go trekking, play chess, snorkel, or explore new places!
+                </p>
               </AboutMe>
             </SectionContent>
           </SectionContainer>
           <SectionContainer ref={experienceSectionRef}>
-            <SectionTitle >Projects</SectionTitle>
-            <SectionContent>
-            <SectionContentAside>2024 - Present</SectionContentAside>
-              <SectionContentMain>
-                <SectionContentMainTitle>Section title</SectionContentMainTitle>
-                <SectionContentMainDescription>
-                  Fugiat magna veniam esse veniam dolor dolore ullamco nulla
-                  veniam. Sunt elit duis reprehenderit dolor occaecat qui
-                  pariatur Lorem do excepteur Lorem laboris reprehenderit. Dolor
-                  veniam do voluptate aliqua incididunt ullamco culpa. Esse sit
-                  consequat sit sint minim ad fugiat reprehenderit eu est ut
-                  pariatur non. Enim elit officia consectetur nostrud nisi. In
-                  sunt nostrud exercitation pariatur exercitation aliqua ad anim
-                  fugiat proident cillum officia reprehenderit sit. Do eu
-                  excepteur duis officia consectetur.
-                </SectionContentMainDescription>
-              <SectionContentStack>
-                <ul>
-                  <li>Javascript</li>
-                  <li>Node JS</li>
-                  <li>PHP</li>
-                </ul>
-              </SectionContentStack>
-              </SectionContentMain>
-            </SectionContent>
-          </SectionContainer>
-          <SectionContainer ref={educationSectionRef}>
-            <SectionTitle >Education</SectionTitle>
-            <SectionContent>
-            <SectionContentAside>2024 - Present</SectionContentAside>
-              <SectionContentMain>
-                <SectionContentMainTitle>Section title</SectionContentMainTitle>
-                <SectionContentMainDescription>
-                  Fugiat magna veniam esse veniam dolor dolore ullamco nulla
-                  veniam. Sunt elit duis reprehenderit dolor occaecat qui
-                  pariatur Lorem do excepteur Lorem laboris reprehenderit. Dolor
-                  veniam do voluptate aliqua incididunt ullamco culpa. Esse sit
-                  consequat sit sint minim ad fugiat reprehenderit eu est ut
-                  pariatur non. Enim elit officia consectetur nostrud nisi. In
-                  sunt nostrud exercitation pariatur exercitation aliqua ad anim
-                  fugiat proident cillum officia reprehenderit sit. Do eu
-                  excepteur duis officia consectetur.
-                </SectionContentMainDescription>
-              <SectionContentStack>
-                <ul>
-                  <li>Javascript</li>
-                  <li>Node JS</li>
-                  <li>PHP</li>
-                </ul>
-              </SectionContentStack>
-              </SectionContentMain>
-            </SectionContent>
+            <SectionTitle>Projects</SectionTitle>
+            <SectionContentContainer>
+            {
+              experienceData.map((experience, index) => (
+                <SectionContent
+                  ref={(element) => {
+                    if(element) {
+                      experienceRefs.current[index] = element;
+                    }
+                  }}
+                  key={index}
+                  >
+                  <SectionContentAside key={`date_${index}`} $imgSrc={ experience.imgSrc }>
+                    <figure>
+                      <img src={ experience.imgSrc }/>
+                    </figure>
+                  </SectionContentAside>
+                  <SectionContentMain>
+                    <SectionContentMainTitle>
+                      {experience.title}
+                      <FaGithub size={24} onClick={() => window.open(experience.repoSrc)}/>
+                      <GrDeploy size={24} onClick={() => window.open(experience.demoSrc)}/>
+                    </SectionContentMainTitle>
+                    <SectionContentMainInfo>
+                    { experience.description }
+                    </SectionContentMainInfo>
+                  <SectionContentStack>
+                    <ul>
+                      {
+                        experience.stack.map((technology, index) => (
+                          <li key={index}>{ technology }</li>
+                        ))
+                      }
+                    </ul>
+                  </SectionContentStack>
+                  </SectionContentMain>
+                </SectionContent>
+              ))
+            }
+            </SectionContentContainer>
           </SectionContainer>
           <SectionContainer ref={contactSectionRef} $minheight={100}>
-            <SectionTitle>Contact</SectionTitle>
-            <SectionContent/>
+            <SectionContent>
+              <SectionContentContainer>
+                <SectionContentFormContainer>
+                  <ContactFormComponent/>
+                </SectionContentFormContainer>
+              </SectionContentContainer>
+            </SectionContent>
           </SectionContainer>
         </Main>
+        <Footer ref={footerRef}>
+            <ul>
+              <li><FaGithub size={30} onClick={() => window.open("https://github.com/physiodevapp")}/></li>
+              <li><FaLinkedin size={30} onClick={() => window.open("https://www.linkedin.com/in/edu-gamboa/")}/></li>
+            </ul>
+        </Footer>
       </Layout>
     </>
   );

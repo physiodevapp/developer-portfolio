@@ -1,9 +1,5 @@
 import styled from "styled-components";
 
-interface MarkerStyled {
-  $sectionIndex?: number
-}
-
 export const Layout = styled.div`
   width: 100%;
 
@@ -13,16 +9,23 @@ export const Layout = styled.div`
     flex-wrap: nowrap;
     padding: 0em 4em 0em;
     gap: 2em;
+    max-width: 1500px;
+    margin: 0 auto;
   } 
 `
 
 export const Header = styled.header`
   position: sticky;
-  top: 0;
   width: 100%;
-  height: 100vh;
   display: flex;
-`;
+  flex-wrap: wrap;
+  gap: 2em;
+  top: 0;
+  height: 50vh;
+  flex: 1;
+  align-items: flex-end;
+  //border: 1px solid red;
+`
 
 export const Main = styled.main` 
   overflow-y: auto;
@@ -30,28 +33,73 @@ export const Main = styled.main`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  flex: 1.2;
 `
 
-export const HeadShotContainer = styled.figure`
+export const Footer = styled.footer`
   position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 45%;
-  height: 30vh;
-  background: red;
-  z-index: 10;
-`
+  padding: 0em 0.6em;
+  top: calc(50vh + 130px);
+  height: 60px;
+  border: 1px solid yellow;
 
-export const HeadShotImage = styled.img`
-  height: 100%;
-`
+  ul {
+    height: inherit;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    list-style: none;
 
-export const SectionListContainer = styled.section`
+    li {
+      cursor: pointer;
+      opacity: 0.8;
+      line-height: 0;
+    }
+  }
+`;
+
+export const Profile = styled.section`
   width: 100%;
-  height: 40%;
+  top: 0;
   position: absolute;
-  bottom: 0;
+  align-content: flex-end;
+  //border: 1px solid green;
+`
+
+export const Name = styled.p`
+  font-weight: bold;
+  font-size: 3.4rem;
+  line-height: 100%;
+  margin: 0 0 0.2em;
+`
+
+export const Position = styled.p`
+  font-size: 2rem;
+  margin: 0 0 0.6em;
+  opacity: 1;
+`
+
+export const Maxim = styled.p`
+  font-size: 2rem;
+  font-style: italic;
+`
+
+export const MaximQuotes = styled.span`
+  font-size: 3rem;
+  display: inline-block;
+  line-height: 4rem;
+  vertical-align: middle;
+
+  &::before {
+    content: '"';
+  }
+`
+
+export const Index = styled.section`
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  z-index: 20;
 
   ul {
     list-style: none;
@@ -60,48 +108,76 @@ export const SectionListContainer = styled.section`
     li {
       cursor: pointer;
       line-height: 2.2rem;
+      text-transform: uppercase;
     }
   }
 `
 
-export const ListMarker = styled.div<MarkerStyled>`
+export const IndexMarker = styled.div`
   font-weight: bold;
   font-size: 2rem;
   line-height: 2.2rem;
   position: absolute;
-  //top: ${({$sectionIndex}) => ($sectionIndex) ? ($sectionIndex) * 2.2 : 0}rem;
-  //transition: all 0.2s ease-in-out;
 `
 
 interface SectionContainerSyled {
-  $minheight?: number
+  $minheight?: number,
+  $justify?: "start" | "center"
 }
 
 export const SectionContainer = styled.div<SectionContainerSyled>`
-  min-height: ${({$minheight}) => $minheight ? `${$minheight}` : 30 }vh;
+  min-height: ${({$minheight}) => $minheight ? `${$minheight}` : 50 }vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: ${({$justify}) => $justify ? `${$justify}` : "start" };
+  gap: 1em;
+  padding: calc(50vh - 200px) 0% 0%;
 `
 
 export const SectionTitle = styled.h4`
   font-size: 2rem;
   text-transform: capitalize;
+  min-height: 48px;
+`
+
+export const SectionContentContainer = styled.div`
+  padding: 0em 1em;
 `
 
 export const SectionContent = styled.section`
   display: flex;
   gap: 1em;
   flex-wrap: wrap;
-  padding: 1em 0em;
+  padding: 0em 0em 1em;
   margin: 0em 0em 2em;
 `
 
-export const SectionContentAside = styled.div`
+interface SectionContentAsideStyled {
+  $imgSrc: string
+}
+export const SectionContentAside = styled.div<SectionContentAsideStyled>`
   flex: 1;
-  opacity: 0.6;
+  text-align: right;
+  position: relative;
+
+  figure {
+    width: 100%;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    background-image: url(${({$imgSrc}) => $imgSrc});
+    border-radius: 0.6em;
+
+    img {
+      display: none;
+    }
+  }
+
 `
 
 export const SectionContentMain = styled.div`
-  flex: 3;
+  flex: 2;
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
@@ -109,9 +185,26 @@ export const SectionContentMain = styled.div`
 
 export const SectionContentMainTitle = styled.h4`
   font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin: 0em 0em 0em 0.6em;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.4);
+    }
+  }
 `
 
-export const SectionContentMainDescription = styled.p`
+export const SectionContentMainInfo = styled.div`
+
+  img {
+    width: 100%;
+    border-radius: 0.4em;
+  }
 `
 
 export const SectionContentStack = styled.div`
@@ -120,18 +213,60 @@ export const SectionContentStack = styled.div`
   ul {
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.6em;
     list-style: none;
-    gap: 1em;
 
     li {
       padding: 0.4em 0.6em;
-      border: 1px solid;
+      border: 1px solid #00eaff;
       border-radius: 0.6em;
+      color: #00eaff;
     }
   }
 `
 
-export const AboutMe = styled.p`
+export const AboutMe = styled.div`
   line-height: 2em;
-  font-size: 1.2em;
+  font-size: 1.4rem;
+
+  p {
+    margin-bottom: 1em;
+    padding: 0em 2em 0em 0em;
+  }
+`
+
+export const SectionContentFormContainer = styled.div`
+
+  form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 1em;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      
+      p:last-of-type {
+        font-style: italic;
+      }
+
+    }
+
+    div:last-of-type {
+      flex: unset;
+      width: 100%;
+    }
+
+    button {
+      width: 40%;
+      position: relative;
+      right: 0%;
+    }
+
+  }
+  
 `
