@@ -137,7 +137,7 @@ export const PortfolioPage = () => {
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: mainRef.current,
-          start: "bottom-=420 center+=50",
+          start: "bottom-=450 center+=50",
           end: "bottom bottom",
           scrub: true,
           markers: false,
@@ -209,45 +209,7 @@ export const PortfolioPage = () => {
     };
   }, []);  
 
-  // useEffect(() => {
-  //   if (mainRef.current && socialMediaContainerRef.current && contactSectionRef.current) {
-  //     const timeline = gsap.timeline({
-  //       scrollTrigger: {
-  //         trigger: mainRef.current,
-  //         start: "bottom-=400 center+=50",
-  //         end: "bottom bottom",
-  //         scrub: true,
-  //         markers: true,
-  //       },
-  //     });
-
-  //     const xValue = `${socialMediaContainerRef.current.clientWidth + 50}px`
-  //     timeline.to(socialMediaContainerRef.current, { 
-  //       x: xValue,
-  //       duration: 1,
-  //     });
-
-  //     timeline.to(socialMediaContainerRef.current.querySelectorAll('span'), { 
-  //       opacity: 0.6,
-  //       duration: 1.4,
-  //     }, "<");
-
-  //     timeline.to(socialMediaContainerRef.current.querySelectorAll('li'), { 
-  //       opacity: 1,
-  //       duration: 1.4,
-  //     }, "<");
-
-  //     timeline.to(socialMediaRef.current, { 
-  //       x: "10px",
-  //       duration: 1,
-  //     }, "<");
-  //   }
-
-  //   return () => {
-  //     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  //   };
-  // }, []);
-
+  // Social Media
   useEffect(() => {
     // Initial animation on mount
     animateSocialMedia();

@@ -21,6 +21,7 @@ export const TextInput = styled.input`
   border-radius: 0.4em;
   outline: none;
   border: none;
+  font-size: 1.2rem;
 `
 
 export const TextArea = styled(TextInput).attrs({as: 'textarea'})``;
@@ -31,7 +32,7 @@ export const SocialMedia = styled.ul`
   align-items: center;
   flex-direction: row;
   gap: 2em;
-  margin-top: 0.6em;
+  margin-top: 1.4em;
 
   li {
     line-height: 0;
@@ -50,7 +51,7 @@ export const SubmitButton = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
-  margin-top: 0.6em;
+  margin-top: 1.4em;
 
   svg {
     margin-right: 0.4em;

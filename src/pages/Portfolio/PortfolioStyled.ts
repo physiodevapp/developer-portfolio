@@ -112,7 +112,7 @@ export const IndexMarker = styled.div`
 
 export const SocialMedia = styled.section`
   position: absolute;
-  top: 130%;
+  top: 135%;
   width: 100%;
   display: inline-flex;
   align-items: center;
