@@ -11,11 +11,11 @@ import {
   Position,
   Maxim,
   MaximQuotes,
-  Footer
+  SocialMedia
 } from "./PortfolioStyled";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // Import ScrollToPlugin
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import 'animate.css';
 import headShotAsset from "../../assets/img/headshot.png";
 import tetrisShot from '../../assets/img/tetris shot.png';
@@ -25,18 +25,17 @@ import oxygenPhotosShot from '../../assets/img/oxygen photos shot.png';
 import mirandaDashboardShot from '../../assets/img/dashboard shot.png';
 import mirandaWebShot from '../../assets/img/web shot.png';
 import { ContactFormComponent } from "../../components/ContactForm/ContactFormComponent";
-import { TypeAnimation } from "react-type-animation";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { GrDeploy } from "react-icons/gr";
 import { ReactTyped } from "react-typed";
-import { create } from "domain";
 
 // Register ScrollToPlugin and ScrollTrigger
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export const PortfolioPage = () => {
   const mainRef = useRef<HTMLDivElement>(null);
-  const footerRef = useRef<HTMLDivElement>(null);
+  const socialMediaContainerRef = useRef<HTMLDivElement>(null);
+  const socialMediaRef = useRef<HTMLUListElement>(null);
 
   const aboutSectionRef = useRef<HTMLDivElement>(null);
   const experienceSectionRef = useRef<HTMLDivElement>(null);
@@ -133,6 +132,41 @@ export const PortfolioPage = () => {
     }
   };
 
+  const animateSocialMedia = () => {
+    if (mainRef.current && socialMediaContainerRef.current && contactSectionRef.current) {
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: mainRef.current,
+          start: "bottom-=420 center+=50",
+          end: "bottom bottom",
+          scrub: true,
+          markers: false,
+        },
+      });
+
+      const xValue = `${socialMediaContainerRef.current.clientWidth + 50}px`
+      timeline.to(socialMediaContainerRef.current, { 
+        x: xValue,
+        duration: 1,
+      });
+
+      timeline.to(socialMediaContainerRef.current.querySelectorAll('span'), { 
+        opacity: 0.6,
+        duration: 1.4,
+      }, "<");
+
+      timeline.to(socialMediaContainerRef.current.querySelectorAll('li'), { 
+        opacity: 1,
+        duration: 1.4,
+      }, "<");
+
+      timeline.to(socialMediaRef.current, { 
+        x: "10px",
+        duration: 1,
+      }, "<");
+    }
+  }
+
   // Portfolio Index
   useEffect(() => {
     sectionRefs.forEach((refObject, index) => {
@@ -164,7 +198,7 @@ export const PortfolioPage = () => {
               });
             }            
           },
-          markers: true,
+          markers: false,
         });
       }
     });
@@ -174,12 +208,70 @@ export const PortfolioPage = () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);  
+
+  // useEffect(() => {
+  //   if (mainRef.current && socialMediaContainerRef.current && contactSectionRef.current) {
+  //     const timeline = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger: mainRef.current,
+  //         start: "bottom-=400 center+=50",
+  //         end: "bottom bottom",
+  //         scrub: true,
+  //         markers: true,
+  //       },
+  //     });
+
+  //     const xValue = `${socialMediaContainerRef.current.clientWidth + 50}px`
+  //     timeline.to(socialMediaContainerRef.current, { 
+  //       x: xValue,
+  //       duration: 1,
+  //     });
+
+  //     timeline.to(socialMediaContainerRef.current.querySelectorAll('span'), { 
+  //       opacity: 0.6,
+  //       duration: 1.4,
+  //     }, "<");
+
+  //     timeline.to(socialMediaContainerRef.current.querySelectorAll('li'), { 
+  //       opacity: 1,
+  //       duration: 1.4,
+  //     }, "<");
+
+  //     timeline.to(socialMediaRef.current, { 
+  //       x: "10px",
+  //       duration: 1,
+  //     }, "<");
+  //   }
+
+  //   return () => {
+  //     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    // Initial animation on mount
+    animateSocialMedia();
+
+    // Add resize listener to recalculate animation on window resize
+    const handleResize = () => {
+      animateSocialMedia();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
   
   return (
     <>
       <Layout>
         <Header>
-          <Profile style={{padding: "calc(50vh - 200px) 0% 0%"}}>
+          <Profile>
             <Name>Eduardo Gamboa</Name>
             <Position>Full Stack Developer</Position>
             <Maxim>
@@ -211,9 +303,18 @@ export const PortfolioPage = () => {
               </ul>
             </nav>
           </Index>
+          <SocialMedia ref={socialMediaContainerRef}>
+            <span>Contact me through:</span>
+            <ul ref={socialMediaRef}>
+              <li><FaGithub size={30} onClick={() => window.open("https://github.com/physiodevapp")}/></li>
+              <li><FaLinkedin size={30} onClick={() => window.open("https://www.linkedin.com/in/edu-gamboa/")}/></li>
+            </ul>
+            <span>, or via</span> 
+          </SocialMedia>
         </Header>
         <Main ref={mainRef}>
-          <SectionContainer ref={aboutSectionRef} $minheight={100}>
+          <SectionContainer ref={aboutSectionRef} $minheight={100} className="mobile">
+            <SectionTitle className="mobile">About</SectionTitle>
             <SectionContent>
               <AboutMe>
                 <p>
@@ -267,7 +368,8 @@ export const PortfolioPage = () => {
             }
             </SectionContentContainer>
           </SectionContainer>
-          <SectionContainer ref={contactSectionRef} $minheight={100}>
+          <SectionContainer ref={contactSectionRef} $minheight={100} className="mobile">
+            <SectionTitle className="mobile">Get in touch</SectionTitle>
             <SectionContent>
               <SectionContentContainer>
                 <SectionContentFormContainer>
@@ -277,12 +379,6 @@ export const PortfolioPage = () => {
             </SectionContent>
           </SectionContainer>
         </Main>
-        <Footer ref={footerRef}>
-            <ul>
-              <li><FaGithub size={30} onClick={() => window.open("https://github.com/physiodevapp")}/></li>
-              <li><FaLinkedin size={30} onClick={() => window.open("https://www.linkedin.com/in/edu-gamboa/")}/></li>
-            </ul>
-        </Footer>
       </Layout>
     </>
   );

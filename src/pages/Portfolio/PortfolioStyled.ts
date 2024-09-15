@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Layout = styled.div`
   width: 100%;
+  padding: 0;
 
   @media only screen and (min-width: 1000px) {
     display: flex;
@@ -24,46 +25,33 @@ export const Header = styled.header`
   height: 50vh;
   flex: 1;
   align-items: flex-end;
-  //border: 1px solid red;
+
+  @media only screen and (max-width: 1000px) {
+    position: relative;
+    padding: 0em 1em;
+  }
 `
 
 export const Main = styled.main` 
-  overflow-y: auto;
+  overflow-y: visible;
   width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  flex: 1.2;
+  flex: 1;
 `
-
-export const Footer = styled.footer`
-  position: fixed;
-  padding: 0em 0.6em;
-  top: calc(50vh + 130px);
-  height: 60px;
-  border: 1px solid yellow;
-
-  ul {
-    height: inherit;
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    list-style: none;
-
-    li {
-      cursor: pointer;
-      opacity: 0.8;
-      line-height: 0;
-    }
-  }
-`;
 
 export const Profile = styled.section`
   width: 100%;
   top: 0;
   position: absolute;
   align-content: flex-end;
-  //border: 1px solid green;
+  padding: calc(50vh - 200px) 0em 0em;
+
+  @media only screen and (max-width: 1000px) {
+    padding: 6em 0em 0em !important;
+    width: unset;
+  }
 `
 
 export const Name = styled.p`
@@ -96,10 +84,8 @@ export const MaximQuotes = styled.span`
 `
 
 export const Index = styled.section`
-  width: 100%;
   position: absolute;
   top: 100%;
-  z-index: 20;
 
   ul {
     list-style: none;
@@ -111,6 +97,10 @@ export const Index = styled.section`
       text-transform: uppercase;
     }
   }
+
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
 `
 
 export const IndexMarker = styled.div`
@@ -118,6 +108,48 @@ export const IndexMarker = styled.div`
   font-size: 2rem;
   line-height: 2.2rem;
   position: absolute;
+`
+
+export const SocialMedia = styled.section`
+  position: absolute;
+  top: 130%;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+
+  ul {
+    height: inherit;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    list-style: none;
+    transform: translateX(-235px);
+
+    li {
+      cursor: pointer;
+      opacity: 0.6;
+      line-height: 0;
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.4);
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  span {
+    opacity: 0;
+    font-size: 1.4rem;
+  }
+
+  span:last-of-type {
+    transform: translateX(20px);
+  }
+
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
 `
 
 interface SectionContainerSyled {
@@ -132,17 +164,50 @@ export const SectionContainer = styled.div<SectionContainerSyled>`
   flex-direction: column;
   justify-content: ${({$justify}) => $justify ? `${$justify}` : "start" };
   gap: 1em;
-  padding: calc(50vh - 200px) 0% 0%;
+  padding: calc(50vh - 200px) 0em 0em;
+
+  @media only screen and (max-width: 1000px) {
+    padding: 0;
+    
+    &.mobile:first-child {
+      min-height: unset;
+    }
+
+    &.mobile:last-child {
+      justify-content: center;
+    }
+  }
 `
 
 export const SectionTitle = styled.h4`
   font-size: 2rem;
   text-transform: capitalize;
   min-height: 48px;
+  margin-bottom: 1em;
+
+  @media only screen and (max-width: 1000px) {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(20px);
+    padding: 0em 1rem;
+  }
+
+  @media only screen and (min-width: 1000px) {
+    margin-bottom: 0em;
+
+    &.mobile {
+      display: none;
+    }
+  }
 `
 
 export const SectionContentContainer = styled.div`
   padding: 0em 1em;
+
+  @media only screen and (max-width: 1000px) {
+    padding: 0em;
+  }
 `
 
 export const SectionContent = styled.section`
@@ -151,6 +216,12 @@ export const SectionContent = styled.section`
   flex-wrap: wrap;
   padding: 0em 0em 1em;
   margin: 0em 0em 2em;
+
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column-reverse;
+    padding: 0em 1em;
+    margin: 0em 0em 4em;
+  }
 `
 
 interface SectionContentAsideStyled {
@@ -171,6 +242,12 @@ export const SectionContentAside = styled.div<SectionContentAsideStyled>`
 
     img {
       display: none;
+    }
+  }
+
+  @media only screen and (max-width: 1000px) {
+    figure {
+      height: 160px;
     }
   }
 
@@ -200,6 +277,7 @@ export const SectionContentMainTitle = styled.h4`
 `
 
 export const SectionContentMainInfo = styled.div`
+  line-height: 2em;
 
   img {
     width: 100%;
@@ -233,6 +311,13 @@ export const AboutMe = styled.div`
   p {
     margin-bottom: 1em;
     padding: 0em 2em 0em 0em;
+  }
+
+  @media only screen and (max-width: 1000px) { 
+    p {
+      padding: 0em;
+      font-size: 1.2rem;
+    }
   }
 `
 
