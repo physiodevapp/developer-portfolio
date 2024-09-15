@@ -1,6 +1,8 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Field, SubmitButton, TextArea, TextInput } from './ContactFormStyled';
+import { ContactForm, Field, SocialMedia, SubmitButton, TextArea, TextInput } from './ContactFormStyled';
+import { BsSendFill } from "react-icons/bs";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 type FormValues = {
   name: string;
@@ -28,21 +30,20 @@ export const ContactFormComponent = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <ContactForm onSubmit={handleSubmit(onSubmit)}>
       {/* Name Field */}
       <Field>
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="name">{!errors.name ? 'Name:' : <span>{errors.name.message}</span>}</label>
         <TextInput
           id="name"
           {...register("name", { required: "Name is required" })}
           type="text"
         />
-        {errors.name && <p>* {errors.name.message}</p>}
       </Field>
 
       {/* Email Field */}
       <Field>
-        <label htmlFor="email">Email:</label>
+        <label htmlFor="email">{!errors.email ? 'Email:' : <span>{errors.email.message}</span>}</label>
         <TextInput
           id="email"
           {...register("email", {
@@ -54,23 +55,24 @@ export const ContactFormComponent = () => {
           })}
           type="email"
         />
-        {errors.email && <p>* {errors.email.message}</p>}
       </Field>
 
       {/* Message Field */}
       <Field>
-        <label htmlFor="message">Message:</label>
+        <label htmlFor="message">{!errors.message ? 'Message:' : <span>{errors.message.message}</span>}</label>
         <TextArea
           id="message"
-          rows={12}
+          rows={11}
           {...register("message", { required: "Message is required" })}
         />
-        {errors.message && <p>* {errors.message.message}</p>}
       </Field>
 
-      {/* Submit Button */}
-      <SubmitButton type="submit">Get in touch</SubmitButton>
-    </form>
+      <SocialMedia>
+        <li><FaGithub size={50} onClick={() => window.open("https://github.com/physiodevapp")}/></li>
+        <li><FaLinkedin size={50} onClick={() => window.open("https://www.linkedin.com/in/edu-gamboa/")}/></li>
+      </SocialMedia> 
+      <SubmitButton type="submit" style={{width: "30%"}}><BsSendFill/>Email</SubmitButton>
+    </ContactForm>
   );
 }
 
