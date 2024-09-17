@@ -28,6 +28,7 @@ import { ContactFormComponent } from "../../components/ContactForm/ContactFormCo
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { GrDeploy } from "react-icons/gr";
 import { ReactTyped } from "react-typed";
+import { BsSendFill } from "react-icons/bs";
 
 // Register ScrollToPlugin and ScrollTrigger
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -42,6 +43,8 @@ export const PortfolioPage = () => {
   const contactSectionRef = useRef<HTMLDivElement>(null);
   
   const listMarkerRef = useRef<HTMLDivElement>(null);
+
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
 
   const sectionRefs = [
     { ref: aboutSectionRef, title: "About Me" },
@@ -131,13 +134,16 @@ export const PortfolioPage = () => {
       });
     }
   };
-
+ 
   const animateSocialMedia = () => {
     if (mainRef.current && socialMediaContainerRef.current && contactSectionRef.current) {
+      // Kill existing ScrollTrigger instance to avoid duplicates
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: mainRef.current,
-          start: "bottom-=380 center+=50",
+          start: "bottom-=360 center+=80",
           end: "bottom bottom",
           scrub: true,
           markers: false,
@@ -146,7 +152,8 @@ export const PortfolioPage = () => {
 
       const xValue = `${socialMediaContainerRef.current.clientWidth + 50}px`
       timeline.to(socialMediaContainerRef.current, { 
-        x: xValue,
+        x: 0,
+        y: 0,
         duration: 1.4,
       });
 
@@ -240,8 +247,8 @@ export const PortfolioPage = () => {
               <MaximQuotes/>
               <ReactTyped 
                 strings={[
-                  '<span style="color: #00eaff; font-weight: 600;">&lt;</span>Better code<span style="color: #00eaff; font-weight: 600;">&gt;</span>',
-                  '<span style="color: #00eaff; font-weight: 600;">&lt;</span>Better lives<span style="color: #00eaff; font-weight: 600;"><span style="font-size: 1.2rem; line-height: 1.2rem; vertical-align: middle; display: inline-flex; padding: 0rem 0rem 0.3rem 0.3rem;">/</span>&gt;</span>',
+                  '<span style="color: #00cbff; font-weight: 600;">&lt;</span>Better code<span style="color: #00cbff; font-weight: 600;">&gt;</span>',
+                  '<span style="color: #00cbff; font-weight: 600;">&lt;</span>Better lives<span style="color: #00cbff; font-weight: 600;"><span style="font-size: 1.2rem; line-height: 1.2rem; vertical-align: middle; display: inline-flex; padding: 0rem 0rem 0.3rem 0.3rem;">/</span>&gt;</span>',
                 ]}
                 typeSpeed={40} 
                 backSpeed={60}
@@ -252,26 +259,26 @@ export const PortfolioPage = () => {
                 />
               <MaximQuotes/>
             </Maxim>
+            <Index>
+              <IndexMarker ref={listMarkerRef}>{">"}</IndexMarker>
+              <nav>
+                <ul>
+                  { 
+                    sectionRefs.map((sectionRefObj, index) => (
+                      <li key={index} onClick={() => scrollToSection(sectionRefObj.ref)}>{sectionRefObj.title}</li>
+                    )) 
+                  }
+                </ul>
+              </nav>
+            </Index>
           </Profile>
-          <Index>
-            <IndexMarker ref={listMarkerRef}>{">"}</IndexMarker>
-            <nav>
-              <ul>
-                { 
-                  sectionRefs.map((sectionRefObj, index) => (
-                    <li key={index} onClick={() => scrollToSection(sectionRefObj.ref)}>{sectionRefObj.title}</li>
-                  )) 
-                }
-              </ul>
-            </nav>
-          </Index>
           <SocialMedia ref={socialMediaContainerRef}>
             <span>Contact me through:</span>
             <ul ref={socialMediaRef}>
               <li><FaGithub size={30} onClick={() => window.open("https://github.com/physiodevapp")}/></li>
               <li><FaLinkedin size={30} onClick={() => window.open("https://www.linkedin.com/in/edu-gamboa/")}/></li>
             </ul>
-            <span>, or via</span> 
+            <span>, or via email <BsSendFill className="animate__animated animate__swing animate__slower animate__infinite"/></span> 
           </SocialMedia>
         </Header>
         <Main ref={mainRef}>
@@ -335,7 +342,7 @@ export const PortfolioPage = () => {
             <SectionContent>
               <SectionContentContainer>
                 <SectionContentFormContainer>
-                  <ContactFormComponent/>
+                  <ContactFormComponent ref={submitButtonRef}/>
                 </SectionContentFormContainer>
               </SectionContentContainer>
             </SectionContent>

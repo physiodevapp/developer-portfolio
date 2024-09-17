@@ -146,6 +146,10 @@ export const SocialMedia = styled.section`
 
   span:last-of-type {
     transform: translateX(20px);
+
+    svg {
+      margin-left: 0.2em;
+    }
   }
 
   @media only screen and (max-width: 1000px) {

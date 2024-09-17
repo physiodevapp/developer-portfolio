@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ContactForm, Field, SocialMedia, SubmitButton, TextArea, TextInput } from './ContactFormStyled';
 import { BsSendFill } from "react-icons/bs";
@@ -10,7 +10,7 @@ type FormValues = {
   message: string;
 };
 
-export const ContactFormComponent = () => {
+export const ContactFormComponent = forwardRef<HTMLButtonElement>((props, ref) => {
   const {
     register,
     handleSubmit,
@@ -71,8 +71,8 @@ export const ContactFormComponent = () => {
         <li><FaGithub size={50} onClick={() => window.open("https://github.com/physiodevapp")}/></li>
         <li><FaLinkedin size={50} onClick={() => window.open("https://www.linkedin.com/in/edu-gamboa/")}/></li>
       </SocialMedia> 
-      <SubmitButton type="submit" style={{width: "30%"}}><BsSendFill/>Email</SubmitButton>
+      <SubmitButton ref={ref} type="submit" style={{width: "30%"}}><BsSendFill/>Email</SubmitButton>
     </ContactForm>
   );
-}
+})
 

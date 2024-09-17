@@ -32,7 +32,7 @@ export const SocialMedia = styled.ul`
   align-items: center;
   flex-direction: row;
   gap: 2em;
-  margin-top: 1.8em;
+  margin-top: 0.2em;
 
   li {
     line-height: 0;
@@ -51,7 +51,7 @@ export const SubmitButton = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
-  margin-top: 1.8em;
+  margin-top: 0.2em;
 
   svg {
     margin-right: 0.4em;
