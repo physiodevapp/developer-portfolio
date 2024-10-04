@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ContactForm, Field, SocialMedia, SubmitButton, TextArea, TextInput } from './ContactFormStyled';
 import { BsSendFill } from "react-icons/bs";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { useTheme } from "../../context/ThemeContext";
 
 type FormValues = {
   name: string;
@@ -11,6 +12,8 @@ type FormValues = {
 };
 
 export const ContactFormComponent = forwardRef<HTMLButtonElement>((props, ref) => {
+  const { isDarkMode } = useTheme();
+
   const {
     register,
     handleSubmit,
@@ -25,12 +28,11 @@ export const ContactFormComponent = forwardRef<HTMLButtonElement>((props, ref) =
 
     window.location.href = mailtoLink;
 
-    // Optionally reset the form after submission
     reset();
   };
 
   return (
-    <ContactForm onSubmit={handleSubmit(onSubmit)}>
+    <ContactForm onSubmit={handleSubmit(onSubmit)} isDarkMode={isDarkMode}>
       {/* Name Field */}
       <Field>
         <label htmlFor="name">{!errors.name ? 'Name:' : <span>{errors.name.message}</span>}</label>

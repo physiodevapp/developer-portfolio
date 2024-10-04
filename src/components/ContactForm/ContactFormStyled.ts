@@ -1,9 +1,17 @@
 import styled from "styled-components";
 
-export const ContactForm = styled.form`
+interface ContactFormStyled {
+  isDarkMode: boolean
+}
+
+export const ContactForm = styled.form<ContactFormStyled>`
   @media only screen and (max-width: 1000px) {
     align-items: center;
     justify-content: space-between !important;
+  }
+
+  input, textarea, button {
+    border: ${({isDarkMode}) => `${!isDarkMode ? 1: 0}px solid #bcbcbc`};
   }
 `
 

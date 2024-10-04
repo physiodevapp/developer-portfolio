@@ -63,6 +63,8 @@ export const Name = styled.p`
 `
 
 export const Position = styled.p`
+  display: inline-flex;
+  align-items: center;
   font-size: 2rem;
   margin: 0 0 0.6em;
   opacity: 1;
@@ -290,7 +292,11 @@ export const SectionContentMainInfo = styled.div`
   }
 `
 
-export const SectionContentStack = styled.div`
+interface SectionContentStackStyled {
+  isDarkMode: boolean;
+}
+
+export const SectionContentStack = styled.div<SectionContentStackStyled>`
   width: 100%;
 
   ul {
@@ -302,9 +308,10 @@ export const SectionContentStack = styled.div`
 
     li {
       padding: 0.4em 0.6em;
-      border: 1px solid #00eaff;
+      border: ${({isDarkMode}) => `${isDarkMode ? 1 : 2}px solid #00eaff`};
       border-radius: 0.6em;
-      color: #00eaff;
+      color: ${({isDarkMode}) => `${isDarkMode ? '#00eaff' : '#00eaff'}`};
+      font-weight: ${({isDarkMode}) =>  `${isDarkMode ? 'unset' : 400}`};
     }
   }
 `

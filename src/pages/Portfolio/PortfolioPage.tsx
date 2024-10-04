@@ -29,11 +29,15 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { GrDeploy } from "react-icons/gr";
 import { ReactTyped } from "react-typed";
 import { BsSendFill } from "react-icons/bs";
+import { DarkLightToggleButton } from "../../components/DarkLightToggleButton/DarkLightToggleButton";
+import { useTheme } from "../../context/ThemeContext";
 
 // Register ScrollToPlugin and ScrollTrigger
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export const PortfolioPage = () => {
+  const { isDarkMode } = useTheme();
+
   const mainRef = useRef<HTMLDivElement>(null);
   const socialMediaContainerRef = useRef<HTMLDivElement>(null);
   const socialMediaRef = useRef<HTMLUListElement>(null);
@@ -137,9 +141,6 @@ export const PortfolioPage = () => {
  
   const animateSocialMedia = () => {
     if (mainRef.current && socialMediaContainerRef.current && contactSectionRef.current) {
-      // Kill existing ScrollTrigger instance to avoid duplicates
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: mainRef.current,
@@ -148,13 +149,6 @@ export const PortfolioPage = () => {
           scrub: true,
           markers: false,
         },
-      });
-
-      const xValue = `${socialMediaContainerRef.current.clientWidth + 50}px`
-      timeline.to(socialMediaContainerRef.current, { 
-        x: 0,
-        y: 0,
-        duration: 1.4,
       });
 
       timeline.to(socialMediaContainerRef.current.querySelectorAll('span'), { 
@@ -214,7 +208,7 @@ export const PortfolioPage = () => {
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, []);  
+  }, [sectionRefs]);  
 
   // Social Media
   useEffect(() => {
@@ -242,7 +236,10 @@ export const PortfolioPage = () => {
         <Header>
           <Profile>
             <Name>Eduardo Gamboa</Name>
-            <Position>Full Stack Developer</Position>
+            <Position>
+              Full Stack Developer
+              <DarkLightToggleButton/>
+            </Position>
             <Maxim>
               <MaximQuotes/>
               <ReactTyped 
@@ -322,7 +319,7 @@ export const PortfolioPage = () => {
                     <SectionContentMainInfo>
                     { experience.description }
                     </SectionContentMainInfo>
-                  <SectionContentStack>
+                  <SectionContentStack isDarkMode={isDarkMode}>
                     <ul>
                       {
                         experience.stack.map((technology, index) => (
