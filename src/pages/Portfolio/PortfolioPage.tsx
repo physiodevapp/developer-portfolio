@@ -75,7 +75,7 @@ export const PortfolioPage = () => {
       stack: ['Javascript', 'Sass'],
       description: 'A responsive web application built with modern JavaScript and styled with Sass for a clean and dynamic user interface.',
       repoSrc: 'https://github.com/physiodevapp/web-miranda',
-      demoSrc: 'https://physiodevapp.github.io/web-miranda/',
+      demoSrc: 'http://13.38.95.38/',
     },
     {
       year: '2024',
